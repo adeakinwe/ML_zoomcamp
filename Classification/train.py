@@ -95,45 +95,8 @@ auc = roc_auc_score(y_test, y_pred)
 auc
 
 
-# MODEL SAVING AND LOADING
+# MODEL SAVING
 output_file = f'model_{version}.bin'
 with open(output_file, 'wb') as f_out:
     pickle.dump((dv,model), f_out)
 saved_model = 'model_1.0.bin'
-
-with open(saved_model, 'rb') as f_in:
-    dv,model = pickle.load(f_in)
-
-
-# PREDICTION FOR A NEW CUSTOMER
-
-customer = {
-    'gender': 'female',
-    'seniorcitizen': 1,
-    'partner': 'yes',
-    'dependents': 'no',
-    'phoneservice': 'no',
-    'multiplelines': 'no_phone_service',
-    'internetservice': 'dsl',
-    'onlinesecurity': 'no',
-    'onlinebackup': 'yes',
-    'deviceprotection': 'no',
-    'techsupport': 'no',
-    'streamingtv': 'no',
-    'streamingmovies': 'no',
-    'contract': 'month-to-month',
-    'paperlessbilling': 'yes',
-    'paymentmethod': 'electronic_check',
-    'tenure': 6,
-    'monthlycharges': 29.85,
-    'totalcharges': 29.85
-}
-
-def predict_cust(customer, dv, model):
-    cust = dv.transform([customer])
-    prediction = model.predict_proba(cust)
-
-    return prediction[0,1]
-
-prediction = predict_cust(customer, dv, model)
-print(prediction)
